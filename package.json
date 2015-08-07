@@ -1,0 +1,15 @@
+{
+  "name": "hlint-refactor",
+  "main": "./lib/hlint-refactor",
+  "version": "0.1.0",
+  "description": "Bindings to hlint to automatically apply suggestions.",
+  "keywords": [ "haskell", "refactoring"
+  ],
+  "repository": "https://github.com/atom/hlint-refactor",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+  }
+}
