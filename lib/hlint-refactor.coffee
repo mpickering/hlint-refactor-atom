@@ -11,11 +11,11 @@ module.exports = Refactor =
       type: 'string'
       default: 'refactor'
       description: 'Path to refactor executable'
-  runCmd: (path,opts,title) ->
+  runCmd: (path,opts,bufferText, title) ->
     lines = []
     rpath=atom.config.get 'hlint-refactor.refactorPath'
     new Promise (resolve) ->
-      new BufferedProcess
+      bp = new BufferedProcess
         command: path
         args: opts.concat(['--refactor', "--with-refactor=#{rpath}"])
         stderr: (line) ->
@@ -26,6 +26,8 @@ module.exports = Refactor =
           text: lines.join '\n'
           exitCode: code
           title: title
+      bp.process.stdin.write(bufferText)
+      bp.process.stdin.end()
 
   activate: (state) ->
 
@@ -51,8 +53,7 @@ module.exports = Refactor =
     buffer =atom.workspace.getActiveTextEditor()
     pos = buffer.getCursorBufferPosition()
     hlintPath =atom.config.get 'hlint-refactor.hlintPath'
-    file = buffer.getPath()
-    @runCmd(hlintPath,[file].concat(os), "hlint-refact")
+    @runCmd(hlintPath,['-'].concat(os),buffer.getText(), "hlint-refact")
     .then (res) =>
       if res.exitCode == 0
         buffer.setText(res.text)
