@@ -45,7 +45,7 @@ module.exports = Refactor =
   applyOne: ->
     buffer =atom.workspace.getActiveTextEditor()
     pos = buffer.getCursorBufferPosition()
-    @applyGen ["--refactor-options=--pos\ #{pos.row + 1},#{pos.column}"]
+    @applyGen ["--refactor-options=--pos\ #{pos.row + 1},#{pos.column + 1}"]
 
   applyAll: -> @applyGen []
 
