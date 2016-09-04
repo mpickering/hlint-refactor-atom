@@ -56,7 +56,7 @@ module.exports = Refactor =
     @runCmd(hlintPath,['-'].concat(os),buffer.getText(), "hlint-refact")
     .then (res) =>
       if res.exitCode == 0
-        buffer.setText(res.text)
+        buffer.getBuffer().setTextViaDiff(res.text)
         buffer.setCursorBufferPosition(pos)
       else
         atom.notifications.addError(res.text)
