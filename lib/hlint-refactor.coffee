@@ -53,10 +53,11 @@ module.exports = Refactor =
     buffer =atom.workspace.getActiveTextEditor()
     pos = buffer.getCursorBufferPosition()
     hlintPath =atom.config.get 'hlint-refactor.hlintPath'
+    hasTrailingNewline = buffer.getText().endsWith("\n")
     @runCmd(hlintPath,['-'].concat(os),buffer.getText(), "hlint-refact")
     .then (res) =>
       if res.exitCode == 0
-        buffer.getBuffer().setTextViaDiff(res.text)
+        buffer.getBuffer().setTextViaDiff(if hasTrailingNewline then res.text + "\n" else res.text)
         buffer.setCursorBufferPosition(pos)
       else
         atom.notifications.addError(res.text)
