@@ -12,18 +12,18 @@ module.exports = Refactor =
       default: 'refactor'
       description: 'Path to refactor executable'
   runCmd: (path,opts,bufferText, title) ->
-    lines = []
+    chunks = []
     rpath=atom.config.get 'hlint-refactor.refactorPath'
     new Promise (resolve) ->
       bp = new BufferedProcess
         command: path
         args: opts.concat(['--refactor', "--with-refactor=#{rpath}"])
-        stderr: (line) ->
-          lines.push line.slice(0,-1)
-        stdout: (line) ->
-          lines.push line.slice(0,-1)
+        stderr: (chunk) ->
+          chunks.push chunk
+        stdout: (chunk) ->
+          chunks.push chunk
         exit: (code) -> resolve
-          text: lines.join '\n'
+          text: chunks.join('')
           exitCode: code
           title: title
       bp.process.stdin.write(bufferText)
